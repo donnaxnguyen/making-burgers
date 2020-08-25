@@ -1,7 +1,7 @@
 {
   "name": "burgerhomework",
   "version": "1.0.0",
-  "description": "deployed app: https://fierce-mountain-69807.herokuapp.com/",
+  "description": "deployed app: https://limitless-refuge-82836.herokuapp.com/",
   "main": "server.js",
   "dependencies": {
     "express": "^4.17.1",
