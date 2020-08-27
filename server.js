@@ -1,7 +1,7 @@
 var express = require("express");
 var bodyParser = require("body-parser");
 
-var PORT = process.env.PORT || 3306;
+var PORT = process.env.PORT || 3305;
 var app = express();
 
 var burgerController = require("./controllers/burgers_controller.js");

@@ -1,19 +1,17 @@
 {
   "name": "burgerhomework",
   "version": "1.0.0",
-  "description": "deployed app: https://limitless-refuge-82836.herokuapp.com/",
+  "description": "### Overview",
   "main": "server.js",
   "dependencies": {
-    "express": "^4.17.1",
     "express-handlebars": "^5.1.0",
-    "mysql": "^2.18.1",
-    "serve": "^11.3.2"
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js",
-    "heroku-postbuild": "npm run build"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
