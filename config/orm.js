@@ -6,52 +6,65 @@
 // updateOne()
 // Export the ORM object in module.exports.
 
-
-// requiring connection
-var connection = require("../config/connection.js");
-
-var orm = {
-	selectAll: function(tableInput, callback){
-		var queryString = "SELECT * FROM " + tableInput + ";";
-		console.log(queryString);
-		connection.query(queryString, function(error, result){
-			if (error) throw error;
-			callback(result);
-		});
-	},
-
-	insertOne: function(tableInput, column, callback){
-		var name = column.toString();
-		console.log(name);
-		var queryString = "INSERT INTO " + tableInput + "(burger_name, devoured) VALUES ( '" + name + "', false);"
-		console.log(queryString);
-		connection.query(queryString, function(error, result){
-			if (error) throw error;
-			callback(result);
-		});
-	},
-
-	updateOne: function(tableInput, columnValue, condition, callback){
-		var queryString = "UPDATE " + tableInput;
-		queryString += ' SET devoured = true';
-		queryString += ' WHERE ';
-		queryString += condition;
-		console.log(queryString);
-		connection.query(queryString, function(error, result){
-			if (error) throw error;
-			callback(result);
-		});
-	},
-
-	deleteOne: function(tableInput, condition, callback) {
-    var queryString = "DELETE FROM " + tableInput;
-    queryString += " WHERE ";
-    queryString += condition;
-    connection.query(queryString, function(error, result) {
-      		if (error) throw error;
-			callback(result);
-    });
+function objToSql(ob) {
+	var arr = [];
+	for (var key in ob) {
+	  var value = ob[key];
+	  if (Object.hasOwnProperty.call(ob, key)) {
+		if (typeof value === "string" && value.indexOf(" ") >= 0) {
+		  value = "'" + value + "'";
+		}
+		arr.push(key + "=" + value);
+	  }
+	}
+	return arr.toString();
   }
-};
-
-module.exports = orm;
+  
+  var orm = {
+	  selectAll: function(tableInput, cb) {
+		  var queryString = "SELECT * FROM ??";
+		  connection.query(queryString, [tableInput], function(err, result){
+			  if (err) {
+				  throw err;
+			  }
+			  console.log(result);
+			  cb(result);
+		  });
+	  },
+	  insertOne: function(tableInput, valOfCol, valOfOtherCol, cb) {
+		  var queryString = "INSERT INTO " + tableInput;
+		  queryString += " (";
+		  queryString += valOfCol.toString();
+		  queryString += ") "
+		  queryString += "VALUES (";
+		  queryString += "?"
+		  queryString += ") ";
+  
+		  console.log(queryString);
+  
+		  connection.query(queryString, [valOfOtherCol], function(err, result) {
+			  if (err) {
+				  throw err;
+			  }
+			  console.log(result);
+			  cb(result);
+		  });
+	  },
+	  updateOne: function(tableInput, columnInput, condition, cb) {
+		  var queryString = "UPDATE " + tableInput;
+		  queryString += " SET " + objToSql(columnInput);
+		  queryString += " WHERE ";
+		  queryString += condition;
+  
+  
+		  console.log(queryString);
+  
+		  connection.query(queryString, function(err, result) {
+			  if (err) {
+				  throw err;
+			  }
+			  console.log(result);
+			  cb(result);
+		  });
+	  }
+  };

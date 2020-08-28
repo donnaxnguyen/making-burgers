@@ -1,71 +1,51 @@
 <div class="container">
-
-	<div class="row">
-		<div class="col-md-12">
-		
-		</div>
+	<div class="text-center">
+	  <img src="assets/img/burger.png" class="rounded" alt="happy burger">
 	</div>
 
+	<h1 class="text-center">EAT DA BURGER!!</h1>
+	<!-- Row for list of burgers entered -->
 	<div class="row">
-		<div class="col-md-12">
-			<h1 class="text-center text-danger">Eat</h1>
-		</div>
-	</div>
-	
-	<div class="row">
-		<div class="col-md-5">
-			<ul>
-				{{#each burgers}}
-				{{#unless devoured}}
-				<form>
-					<div class="input-group">
-						<li class="form-control">
-							{{id}}.
-							{{burger_name}}
-						</li>
-						<span class="input-group-btn">
-							<button class="devour btn btn-secondary" data-id="{{id}}">Eat It</button>
-						</span>
-					</div>
-				</form>
-				{{/unless}}
-				{{/each}}
+		<!-- Left list: Burgers entered, but not devoured yet -->
+		<div class="col-md-5 burger-box" id="not-devoured">
+			<!-- Pass in data from server.js -->
+			<ul class="list-group">
+			  {{#each burgers}}
+			  	{{#unless devoured}}
+						{{> burgers/burgerNotDevoured-block}}
+					{{/unless}}
+			  {{/each}}
 			</ul>
 		</div>
 
-		<div class="col-md-2"></div>
+		<!-- Forcing a space between the two columns -->
+		<div class="col-md-2" id="blank">
+		</div>
 
-		<div class="col-md-5">
+		<!-- Right list: Burgers devoured -->
+		<div class="col-md-5 burger-box" id="devoured">
 			<ul class="list-group">
 				{{#each burgers}}
-				{{#if devoured}}
-				<form>
-					<div class="input-group">
-						<li class="form-control" style="background-color:#D5DBDB;">
-							{{id}}.
-							{{burger_name}}
-						</li>
-						<span class="input-group-btn">
-							<button class="delete btn btn-secondary" data-id="{{id}}">Throw it Away</button>
-						</span>
-					</div>
-				</form>
-				{{/if}}
+					{{#if devoured}}
+						{{> burgers/burgerDevoured-block}}
+					{{/if}}
 				{{/each}}
 			</ul>
 		</div>
 	</div>
-	
-	<div class="row">
-		<div class="col-md-12 text-center">
-			<form id="add-burger">
+
+	<!-- Row for textbox to enter in new burger -->
+	<div class="row justify-content-center bottom">
+		<div class="col-md-5">
+			<form class="create-form">
 				<div class="form-group">
-					<textarea id="burger" name="burger" rows="5" cols="40"></textarea>
+					<input class="form-control form-control-lg" type="text" name="burger_name" id="burgerInfo" placeholder="Type in a burger here!">
+					<br>
+					<button type="submit" class="btn btn-primary btn-lg burger-button">Submit</button>
+
+					<p class="text-center directions">Type in the name of a burger you want to eat and then click submit</p>
 				</div>
-				<button class="btn btn-primary" type="submit" id="submit-btn">Submit</button>
 			</form>
-			<p class="h4"> Enter the kind of burger you want to eat then click submit</p>
 		</div>
 	</div>
-	
 </div>

@@ -1,34 +1,37 @@
-// Inside your burger directory, create a folder named controllers.
-// In controllers, create the burgers_controller.js file.
-// Inside the burgers_controller.js file, import the following:
-// Express
-// burger.js
-// Create the router for the app, and export the router at the end of your file.
-
 var express = require("express");
-var router = express.Router();
 var burger = require("../models/burger.js");
+var router = express.Router();
 
 
-router.post("/", function(req, res) {
-  burger.insertOne([
-    req.body.name
-  ], function(result) {
+router.get("/", function(req, res) {
+	burger.selectAll(function(data) {
+		var handlebarsObject = {
+			burgers: data
+		};
+		res.render("index", handlebarsObject);
+	});
+});
 
-    res.json({ id: result.insertId });
-  });
+router.post("/api/burgers", function(req, res) {
+	burger.insertOne([
+		"burger_name"
+	], [
+		req.body.burger_name
+	], function(result) {
+		res.json({ id: result.insertId });
+	});
 });
 
 
-router.put("/:id", function(req, res) {
-  var condition = "id = " + req.params.id;
-  console.log("condition", condition);
+router.put("/api/burgers/:id", function(req, res) {
+	var burgerId = "id = " + req.params.id;
 
-  burger.updateOne({
-    devoured: req.body.devoured
-  }, condition, function(result) {
+	console.log("Burger status changed for", burgerId);
+
+	burger.updateOne({
+		devoured: 1
+	}, burgerId, function(result) {
     if (result.changedRows == 0) {
-
       return res.status(404).end();
     } else {
       res.status(200).end();
@@ -36,18 +39,5 @@ router.put("/:id", function(req, res) {
   });
 });
 
-
-router.delete("/:id", function(req, res) {
-  var condition = "id = " + req.params.id;
-
-  burger.deleteOne(condition, function(result) {
-    if (result.affectedRows == 0) {
-
-      return res.status(404).end();
-    } else {
-      res.status(200).end();
-    }
-  });
-});
 
 module.exports = router;
