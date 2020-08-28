@@ -5,17 +5,14 @@
 
 var mysql = require("mysql");
  
-var connection;
-
 if (process.env.JAWSDB_URL) {
    connection = mysql.createConnection(process.env.JAWSDB_URL);
 } else {
    connection = mysql.createConnection({
-      host: "127.0.0.1",
+       host: "localhost",
        user: "root",
        password: "password",
-       database: "burgers_db",
-       port: 3305
+       database: "burgers_db"
    });
 };
  
