@@ -1,22 +1,30 @@
 var express = require("express");
-var bodyParser = require("body-parser");
 var methodOverride = require("method-override");
-var burgerController = require("./controllers/burgers_controller.js");
+var bodyParser = require("body-parser");
+var exphbs = require("express-handlebars");
+var router = require("./controllers/burgers_controller.js");
+var path = require("path");
 
-
-var PORT = process.env.PORT || 3305;
+// Express setup
 var app = express();
+var PORT = process.env.PORT || 3305;
 
-app.use(express.static("public"));
-app.use(bodyParser.urlencoded({ extended: false }));
-
+// Middleware
 app.use(methodOverride("_method"));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.text());
+app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 
-var expresshandlebars = require("express-handlebars");
-
-app.engine("handlebars", expresshandlebars({ defaultLayout: "main" }));
+// Set up rendering engine, Handlebars
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
-app.use("/", burgerController);
+// Static files and routes (middleware)
+app.use(express.static(__dirname + "/public"));
+app.use("/", router);
 
-app.listen(PORT);
+// Start server
+app.listen(PORT, function() {
+	console.log("Listening on PORT " + PORT);
+});

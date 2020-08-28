@@ -12,32 +12,22 @@ router.get("/", function(req, res) {
 	});
 });
 
-router.post("/api/burgers", function(req, res) {
-	burger.insertOne([
-		"burger_name"
-	], [
-		req.body.burger_name
-	], function(result) {
-		res.json({ id: result.insertId });
+router.post("/", function(req, res) {
+	console.log(req.body.burger_name);
+	if(req.body.burger_name !== "") {
+		burger.insertOne(req.body.burger_name.trim(), function() {
+			res.redirect("/");
+		});
+	}
+});
+
+router.put("/:id", function(req, res) {
+	console.log(req.params.id);
+
+	burger.updateOne(req.params.id, function() {
+		res.redirect("/");
 	});
-});
-
-
-router.put("/api/burgers/:id", function(req, res) {
-	var burgerId = "id = " + req.params.id;
-
-	console.log("Burger status changed for", burgerId);
-
-	burger.updateOne({
-		devoured: 1
-	}, burgerId, function(result) {
-    if (result.changedRows == 0) {
-      return res.status(404).end();
-    } else {
-      res.status(200).end();
-    }
-  });
-});
+})
 
 
 module.exports = router;
